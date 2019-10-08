@@ -6,6 +6,7 @@ const { check, validationResult } = require("express-validator/check");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const bcrypt = require("bcrypt");
+
 // @route   GET api/auth
 // @desc    Test route
 // @access  Public
