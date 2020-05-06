@@ -5,7 +5,7 @@ const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator/check");
 const jwt = require("jsonwebtoken");
 const config = require("config");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 // @route   GET api/auth
 // @desc    Test route
@@ -27,9 +27,7 @@ router.post(
     "/",
     [
         check("email", "Please include a valid email").isEmail(),
-        check("password", "Password is Required")
-            .not()
-            .isEmpty()
+        check("password", "Password is Required").not().isEmpty(),
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -47,7 +45,7 @@ router.post(
             }
 
             const isMatch = await bcrypt.compare(password, user.password);
-            console.log(isMatch);
+
             if (!isMatch) {
                 return res
                     .status(400)
@@ -55,8 +53,8 @@ router.post(
             }
             const payload = {
                 user: {
-                    id: user.id
-                }
+                    id: user.id,
+                },
             };
             jwt.sign(
                 payload,
